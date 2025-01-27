@@ -105,6 +105,12 @@ type CollectionSummary struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// A complex type that lists the coordinates for a geoproximity resource record.
+type Coordinates struct {
+	Latitude  *string `json:"latitude,omitempty"`
+	Longitude *string `json:"longitude,omitempty"`
+}
+
 // A complex type that lists the name servers in a delegation set, as well as
 // the CallerReference and the ID for the delegation set.
 type DelegationSet struct {
@@ -133,6 +139,21 @@ type GeoLocationDetails struct {
 	ContinentCode   *string `json:"continentCode,omitempty"`
 	CountryCode     *string `json:"countryCode,omitempty"`
 	SubdivisionCode *string `json:"subdivisionCode,omitempty"`
+}
+
+// (Resource record sets only): A complex type that lets you specify where your
+// resources are located. Only one of LocalZoneGroup, Coordinates, or Amazon
+// Web ServicesRegion is allowed per request at a time.
+//
+// For more information about geoproximity routing, see Geoproximity routing
+// (https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy-geoproximity.html)
+// in the Amazon Route 53 Developer Guide.
+type GeoProximityLocation struct {
+	AWSRegion *string `json:"awsRegion,omitempty"`
+	Bias      *int64  `json:"bias,omitempty"`
+	// A complex type that lists the coordinates for a geoproximity resource record.
+	Coordinates    *Coordinates `json:"coordinates,omitempty"`
+	LocalZoneGroup *string      `json:"localZoneGroup,omitempty"`
 }
 
 // A complex type that contains information about the health check.
@@ -276,17 +297,25 @@ type ResourceRecordSet struct {
 	CIDRRoutingConfig *CIDRRoutingConfig `json:"cidrRoutingConfig,omitempty"`
 	Failover          *string            `json:"failover,omitempty"`
 	// A complex type that contains information about a geographic location.
-	GeoLocation             *GeoLocation      `json:"geoLocation,omitempty"`
-	HealthCheckID           *string           `json:"healthCheckID,omitempty"`
-	MultiValueAnswer        *bool             `json:"multiValueAnswer,omitempty"`
-	Name                    *string           `json:"name,omitempty"`
-	Region                  *string           `json:"region,omitempty"`
-	ResourceRecords         []*ResourceRecord `json:"resourceRecords,omitempty"`
-	SetIdentifier           *string           `json:"setIdentifier,omitempty"`
-	TTL                     *int64            `json:"ttl,omitempty"`
-	TrafficPolicyInstanceID *string           `json:"trafficPolicyInstanceID,omitempty"`
-	Type                    *string           `json:"type_,omitempty"`
-	Weight                  *int64            `json:"weight,omitempty"`
+	GeoLocation *GeoLocation `json:"geoLocation,omitempty"`
+	// (Resource record sets only): A complex type that lets you specify where your
+	// resources are located. Only one of LocalZoneGroup, Coordinates, or Amazon
+	// Web ServicesRegion is allowed per request at a time.
+	//
+	// For more information about geoproximity routing, see Geoproximity routing
+	// (https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy-geoproximity.html)
+	// in the Amazon Route 53 Developer Guide.
+	GeoProximityLocation    *GeoProximityLocation `json:"geoProximityLocation,omitempty"`
+	HealthCheckID           *string               `json:"healthCheckID,omitempty"`
+	MultiValueAnswer        *bool                 `json:"multiValueAnswer,omitempty"`
+	Name                    *string               `json:"name,omitempty"`
+	Region                  *string               `json:"region,omitempty"`
+	ResourceRecords         []*ResourceRecord     `json:"resourceRecords,omitempty"`
+	SetIdentifier           *string               `json:"setIdentifier,omitempty"`
+	TTL                     *int64                `json:"ttl,omitempty"`
+	TrafficPolicyInstanceID *string               `json:"trafficPolicyInstanceID,omitempty"`
+	Type                    *string               `json:"type_,omitempty"`
+	Weight                  *int64                `json:"weight,omitempty"`
 }
 
 // A complex type containing a resource and its associated tags.
